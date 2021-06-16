@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Covid Tracker</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="card">
+  <div class="p-3 mb-2 bg-success text-white">
+    <h3>This App keeps track of the covid cases of states in India</h3>
+  </div>
+  <div class="card-body">
+    <table class="table table-dark table-striped">
+  <thead class="table table-success table-striped">
+    <tr>
+     <th >Total Cases</th>
+      <th >Total Active</th>
+       <th >Total Recovered</th>
+        <th >Total Deaths</th>
+        <th >Last Updated At</th>
+     </tr>
+     </thead>
+     <tbody>
+     <td th:text="${totalCases}"></td>
+     <td th:text="${totalActiveCases}"></td>
+     <td th:text="${totalRecovered}"></td>
+     <td th:text="${totalDeaths}"></td>
+     <td th:text="${updatedTime}"></td>
+     </tbody>
+    </table>
+  </div>
+</div>
+<!--  <table class="table table-dark table-striped">-->
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for States..">
+
+<table  id="myTable" class="table table-dark table-striped">
+  <thead class="table table-success table-striped">
+    <tr>
+     <th >State/UT</th>
+      <th >Total Cases</th>
+       <th >Active</th>
+      <th >Recovered</th>
+       <th >Deaths</th>
+       <th >Recovery Rate</th>
+       <th >Fatality Rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="covidStats: ${data}">
+   <td th:text="${covidStats.loc}"></td>
+    <td th:text="${covidStats.totalCaseOfState}"></td>
+    <td th:text="${covidStats.activeCases}"></td>
+    <td th:text="${covidStats.totalRecoveredOfState}"></td>
+      <td th:text="${covidStats.totalDeathsOfState}"></td>
+      <td th:text="${covidStats.recoveryRate}"></td>
+      <td th:text="${covidStats.mortalityRate}"></td>
+      
+    </tr>
+  </tbody>
+</table>
+
+<!-- Footer -->
+<footer class="text-center text-lg-start bg-light text-muted">
+  <!-- Section: Social media -->
+  
+  
+  <!-- Section: Links  -->
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    Datasource:
+    <a class="text-reset fw-bold" href="https://api.rootnet.in/covid19-in/stats/latest/">https://api.rootnet.in/covid19-in/stats/latest</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+</body>
+</html>
